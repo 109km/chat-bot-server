@@ -1,0 +1,16 @@
+<link rel="stylesheet" href="/css/index.css">
+
+<div class="container" id="app">
+  <div class="chat-container">
+    <div v-for="item in messages" v-bind:class="['chat-item' ,'chat-item-' + item.type]" v-html="item.value">
+    </div>
+  </div>
+  <div class="chat-input">
+    <input type="text" v-model="message" v-on:click="inputMessage" v-on:keyup.enter="sendMessage" placeholder="请输入" />
+    <button v-on:click="sendMessage">
+      询问
+    </button>
+  </div>
+</div>
+
+<script src="/js/index.js"></script>
