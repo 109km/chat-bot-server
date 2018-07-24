@@ -10,6 +10,9 @@ function processIntent(intentData) {
   let intent = intentData.topScoringIntent.intent;
   let entities = intentData.entities;
   var results = INTENTS[intent].call(null, intent, entities);
+
+  
+
   return results;
 }
 
@@ -20,22 +23,28 @@ function searchExamTime(intent, entities) {
   return {
     code: 0,
     data: {
+      type: 'text',
       intent: intent,
       city: city,
       province: province,
-      time: '8月12号'
+      time: '8月12号',
+      value: `${province}的考试时间是${time}`
     }
   }
 }
 
 // 查询报名价格的流程
 function searchPrice(intent, entities) {
+  let price = 7980;
+  let name = '普通班';
   return {
     code: 0,
     data: {
+      type: 'text',
       intent: intent,
       name: '普通班',
-      price: 7980
+      price: 7980,
+      value: `${name}的价格是${price}`
     }
   }
 }
@@ -46,7 +55,9 @@ function responseNone(intent) {
   return {
     code: 0,
     data: {
-      intent: intent
+      intent: intent,
+      type: 'text',
+      value: '您的问题简直太奇葩了，我听不懂，换个问题吧'
     }
   }
 }
@@ -56,7 +67,18 @@ function responseHelp(intent, entities) {
   return {
     code: 0,
     data: {
-      intent: intent
+      type: 'list',
+      intent: intent,
+      value: [{
+          text: '1. 报考流程',
+          openType: 'text'
+        },
+        {
+          text: '2. 报考政策',
+          openType: 'link',
+          href: 'https://www.baidu.com/'
+        }
+      ]
     }
   }
 }
@@ -66,7 +88,9 @@ function responseThanks(intent) {
   return {
     code: 0,
     data: {
-      intent: intent
+      intent: intent,
+      type: 'text',
+      value: `感谢您的认可！`
     }
   }
 }

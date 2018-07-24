@@ -6,6 +6,8 @@ var bodyParser = require('body-parser');
 var lessMiddleware = require('less-middleware');
 var logger = require('morgan');
 var http = require('http');
+var fs = require('fs');
+var rfs = require('rotating-file-stream');
 
 var {
   graphqlExpress,
@@ -21,11 +23,18 @@ var apiRouter = require('./routes/api');
 
 var app = express();
 
+var logDirectory = path.join(__dirname, 'log');
+fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory);
+var accessLogStream = rfs('access.log', {
+  interval: '1d', // rotate daily
+  path: logDirectory
+});
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
-app.use(logger('dev'));
+app.use(logger('combined', {stream: accessLogStream}));
 app.use(express.json());
 app.use(express.urlencoded({
   extended: false

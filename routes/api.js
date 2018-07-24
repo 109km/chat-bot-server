@@ -6,6 +6,9 @@ const intent = require('../controllers/intent');
 
 /* GET chat intent */
 router.get('/message/:q', (req, res) => {
+
+  
+
   let q = encodeURIComponent(req.params.q);
   // Get intents' infomation from LUIS
   axios.get(config.LUIS_MODEL_URL + q).then(function(response) {
